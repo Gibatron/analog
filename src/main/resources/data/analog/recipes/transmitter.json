@@ -1,0 +1,22 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		".": {
+			"item": "minecraft:redstone"
+		},
+		"|": {
+			"item": "minecraft:copper_ingot"
+		},
+		"o": {
+			"item": "minecraft:glass"
+		}
+	},
+	"pattern": [
+		" o",
+		".|",
+		".|"
+	],
+	"result": {
+		"item": "analog:transmitter"
+	}
+}
