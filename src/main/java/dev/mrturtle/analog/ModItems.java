@@ -20,6 +20,9 @@ public class ModItems {
 	public static final Item RADIO_ENABLE_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_enable_button");
 	public static final Item RADIO_DISABLE_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_disable_button");
 
+	// Block Holder Items
+	public static final Item TRANSMITTER_HOLDER_ITEM = register(new SimpleModeledPolymerHolderItem(new Item.Settings(), Items.PAPER), "transmitter_holder");
+
 	public static void initialize() {}
 
 	public static <T extends Item> T register(T item, String ID) {
