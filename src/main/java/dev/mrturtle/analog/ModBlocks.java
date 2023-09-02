@@ -1,5 +1,6 @@
 package dev.mrturtle.analog;
 
+import dev.mrturtle.analog.block.ReceiverBlock;
 import dev.mrturtle.analog.block.TransmitterBlock;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -11,7 +12,7 @@ import net.minecraft.util.Identifier;
 
 public class ModBlocks {
 	public static final Block TRANSMITTER_BLOCK = register(new TransmitterBlock(AbstractBlock.Settings.create().pistonBehavior(PistonBehavior.BLOCK).sounds(BlockSoundGroup.WOOD).strength(3.0f)), "transmitter");
-	public static final Block RECEIVER_BLOCK = register(new TransmitterBlock(AbstractBlock.Settings.create().pistonBehavior(PistonBehavior.BLOCK).sounds(BlockSoundGroup.WOOD).strength(3.0f)), "receiver");
+	public static final Block RECEIVER_BLOCK = register(new ReceiverBlock(AbstractBlock.Settings.create().pistonBehavior(PistonBehavior.BLOCK).sounds(BlockSoundGroup.WOOD).strength(3.0f)), "receiver");
 
 	public static void initialize() {}
 
