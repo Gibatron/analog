@@ -9,6 +9,8 @@ import net.minecraft.util.Identifier;
 
 public class ModItems {
 	public static final Item RADIO_ITEM = register(new RadioItem(new Item.Settings().maxCount(1)), "radio");
+	public static final Item TRANSMITTER_ITEM = register(new SimpleModeledPolymerBlockItem(new Item.Settings(), ModBlocks.TRANSMITTER_BLOCK, Items.PAPER), "transmitter");
+	public static final Item RECEIVER_ITEM = register(new SimpleModeledPolymerBlockItem(new Item.Settings(), ModBlocks.RECEIVER_BLOCK, Items.PAPER), "receiver");
 
 	// GUI Items
 	public static final Item RADIO_TRANSMIT_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_transmit_button");

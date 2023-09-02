@@ -1,0 +1,25 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		".": {
+			"item": "minecraft:redstone"
+		},
+		"|": {
+			"item": "minecraft:copper_ingot"
+		},
+		"^": {
+			"item": "minecraft:amethyst_shard"
+		},
+		"n": {
+			"item": "minecraft:note_block"
+		}
+	},
+	"pattern": [
+		" ^",
+		"n|",
+		".|"
+	],
+	"result": {
+		"item": "analog:receiver"
+	}
+}

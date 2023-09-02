@@ -1,0 +1,14 @@
+{
+	"type": "minecraft:crafting_shapeless",
+	"ingredients": [
+		{
+			"item": "analog:transmitter"
+		},
+		{
+			"item": "analog:receiver"
+		}
+	],
+	"result": {
+		"item": "analog:radio"
+	}
+}
