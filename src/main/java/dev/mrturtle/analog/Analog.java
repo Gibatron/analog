@@ -15,5 +15,6 @@ public class Analog implements ModInitializer {
 		PolymerResourcePackUtils.markAsRequired();
 		ModItems.initialize();
 		ModBlocks.initialize();
+		ModBlockEntities.initialize();
 	}
 }

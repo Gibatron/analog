@@ -3,12 +3,17 @@ package dev.mrturtle.analog.util;
 import com.google.common.collect.ImmutableList;
 import de.maxhenkel.voicechat.api.VoicechatServerApi;
 import de.maxhenkel.voicechat.api.packets.MicrophonePacket;
+import dev.mrturtle.analog.AnalogPlugin;
 import dev.mrturtle.analog.ModItems;
+import dev.mrturtle.analog.block.ReceiverBlockEntity;
+import dev.mrturtle.analog.world.GlobalReceiverState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
 import java.util.ArrayList;
@@ -73,6 +78,8 @@ public class RadioUtil {
 
 	public static void transmitOnChannel(VoicechatServerApi serverApi, MicrophonePacket packet, ServerPlayerEntity sender, int senderChannel) {
 		MinecraftServer server = sender.getServer();
+		ServerWorld world = sender.getServerWorld();
+		// Player radios
 		for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
 			if (player == sender)
 				continue;
@@ -91,11 +98,31 @@ public class RadioUtil {
 			if (!canHear)
 				continue;
 			// Play voice to nearby players
-			List<PlayerEntity> playersInRange = player.getServerWorld().getEntitiesByClass(PlayerEntity.class, Box.of(player.getPos(), 16, 16, 16), (entity) -> true);
+			List<PlayerEntity> playersInRange = world.getEntitiesByClass(PlayerEntity.class, Box.of(player.getPos(), 16, 16, 16), (entity) -> true);
 			for (PlayerEntity entity : playersInRange) {
-				serverApi.sendLocationalSoundPacketTo(serverApi.getConnectionOf(entity.getUuid()), packet.locationalSoundPacketBuilder().position(serverApi.createPosition(player.getX(), player.getY(), player.getZ())).distance(8f).build());
+				serverApi.sendLocationalSoundPacketTo(serverApi.getConnectionOf(entity.getUuid()), packet.locationalSoundPacketBuilder().category(AnalogPlugin.RADIO_CATEGORY).position(serverApi.createPosition(player.getX(), player.getY(), player.getZ())).distance(8f).build());
 			}
 		}
+		// Receivers
+		server.execute(() -> {
+			List<BlockPos> receivers = getGlobalReceiverState(world).getReceivers();
+			for (BlockPos receiverPos : receivers) {
+				if (!world.isChunkLoaded(receiverPos))
+					continue;
+				ReceiverBlockEntity receiver = (ReceiverBlockEntity) world.getBlockEntity(receiverPos);
+				if (receiver == null)
+					continue;
+				if (!receiver.enabled)
+					continue;
+				if (receiver.channel != senderChannel)
+					continue;
+				// Play voice to players nearby receiver
+				List<PlayerEntity> playersInRange = world.getEntitiesByClass(PlayerEntity.class, Box.of(receiverPos.toCenterPos(), 64, 64, 64), (entity) -> true);
+				for (PlayerEntity entity : playersInRange) {
+					serverApi.sendLocationalSoundPacketTo(serverApi.getConnectionOf(entity.getUuid()), packet.locationalSoundPacketBuilder().category(AnalogPlugin.RADIO_CATEGORY).position(serverApi.createPosition(receiverPos.getX(), receiverPos.getY(), receiverPos.getZ())).distance(32f).build());
+				}
+			}
+		});
 	}
 
 	public static List<ItemStack> getRadios(ServerPlayerEntity player) {
@@ -109,5 +136,9 @@ public class RadioUtil {
 			}
 		}
 		return radios;
+	}
+
+	public static GlobalReceiverState getGlobalReceiverState(ServerWorld world) {
+		return world.getPersistentStateManager().getOrCreate(GlobalReceiverState::fromNbt, GlobalReceiverState::new, "globalReceivers");
 	}
 }

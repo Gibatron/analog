@@ -42,7 +42,7 @@ public class TransmitterBlock extends Block implements PolymerBlock, BlockWithEl
 
 	@Override
 	public @Nullable ElementHolder createElementHolder(ServerWorld world, BlockPos pos, BlockState initialBlockState) {
-		BlockElementHolder elementHolder = new BlockElementHolder(world, ModItems.TRANSMITTER_HOLDER_ITEM);
+		BlockElementHolder elementHolder = new BlockElementHolder(world, pos, ModItems.TRANSMITTER_HOLDER_ITEM);
 		elementHolder.setDirection(initialBlockState.get(FACING));
 		return elementHolder;
 	}

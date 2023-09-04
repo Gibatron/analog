@@ -22,6 +22,7 @@ public class ModItems {
 
 	// Block Holder Items
 	public static final Item TRANSMITTER_HOLDER_ITEM = register(new SimpleModeledPolymerHolderItem(new Item.Settings(), Items.PAPER), "transmitter_holder");
+	public static final Item RECEIVER_HOLDER_ITEM = register(new SimpleModeledPolymerHolderItem(new Item.Settings(), Items.PAPER), "receiver_holder");
 
 	public static void initialize() {}
 
