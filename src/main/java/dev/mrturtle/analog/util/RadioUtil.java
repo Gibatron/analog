@@ -7,7 +7,8 @@ import de.maxhenkel.voicechat.api.opus.OpusEncoder;
 import de.maxhenkel.voicechat.api.packets.MicrophonePacket;
 import dev.mrturtle.analog.ModItems;
 import dev.mrturtle.analog.block.ReceiverBlockEntity;
-import dev.mrturtle.analog.world.GlobalReceiverState;
+import dev.mrturtle.analog.block.TransmitterBlockEntity;
+import dev.mrturtle.analog.world.GlobalRadioState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -16,6 +17,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -125,7 +127,7 @@ public class RadioUtil {
 		}
 		// Receivers
 		server.execute(() -> {
-			List<BlockPos> receivers = getGlobalReceiverState(world).getReceivers();
+			List<BlockPos> receivers = getGlobalRadioState(world).getReceivers();
 			for (BlockPos receiverPos : receivers) {
 				if (!world.isChunkLoaded(receiverPos))
 					continue;
@@ -145,6 +147,25 @@ public class RadioUtil {
 		});
 	}
 
+	public static void transmitOnNearbyTransmitters(VoicechatServerApi serverApi, MicrophonePacket packet, ServerPlayerEntity sender) {
+		MinecraftServer server = sender.getServer();
+		ServerWorld world = sender.getServerWorld();
+		List<BlockPos> transmitters = getGlobalRadioState(world).getTransmitters();
+		Vec3d pos = sender.getPos();
+		server.execute(() -> {
+			for (BlockPos transmitterPos : transmitters) {
+				if (pos.distanceTo(transmitterPos.toCenterPos()) > 8f)
+					continue;
+				TransmitterBlockEntity transmitter = (TransmitterBlockEntity) world.getBlockEntity(transmitterPos);
+				if (transmitter == null)
+					continue;
+				if (!transmitter.enabled)
+					continue;
+				transmitOnChannel(serverApi, packet, sender, transmitter.channel);
+			}
+		});
+	}
+
 	public static List<ItemStack> getRadios(ServerPlayerEntity player) {
 		List<List<ItemStack>> inventories = ImmutableList.of(player.getInventory().main, player.getInventory().offHand);
 		List<ItemStack> radios = new ArrayList<>();
@@ -158,7 +179,7 @@ public class RadioUtil {
 		return radios;
 	}
 
-	public static GlobalReceiverState getGlobalReceiverState(ServerWorld world) {
-		return world.getPersistentStateManager().getOrCreate(GlobalReceiverState::fromNbt, GlobalReceiverState::new, "globalReceivers");
+	public static GlobalRadioState getGlobalRadioState(ServerWorld world) {
+		return world.getPersistentStateManager().getOrCreate(GlobalRadioState::fromNbt, GlobalRadioState::new, "globalRadios");
 	}
 }

@@ -43,13 +43,13 @@ public class ReceiverBlock extends BlockWithEntity implements PolymerBlock, Bloc
 
 	@Override
 	public void onPlaced(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack itemStack) {
-		RadioUtil.getGlobalReceiverState((ServerWorld) world).createReceiver(pos);
+		RadioUtil.getGlobalRadioState((ServerWorld) world).createReceiver(pos);
 	}
 
 	@Override
 	public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
 		super.onStateReplaced(state, world, pos, newState, moved);
-		RadioUtil.getGlobalReceiverState((ServerWorld) world).removeReceiver(pos);
+		RadioUtil.getGlobalRadioState((ServerWorld) world).removeReceiver(pos);
 	}
 
 	@Nullable

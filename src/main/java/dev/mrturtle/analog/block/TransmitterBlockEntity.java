@@ -8,16 +8,16 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ReceiverBlockEntity extends BlockEntity {
+public class TransmitterBlockEntity extends BlockEntity {
 	public boolean enabled = false;
 	public int channel = 0;
 
-	public ReceiverBlockEntity(BlockPos pos, BlockState state) {
-		super(ModBlockEntities.RECEIVER, pos, state);
+	public TransmitterBlockEntity(BlockPos pos, BlockState state) {
+		super(ModBlockEntities.TRANSMITTER, pos, state);
 	}
 
 	public static void tick(World world, BlockPos pos, BlockState blockState, BlockEntity blockEntity) {
-		if (!(blockEntity instanceof ReceiverBlockEntity))
+		if (!(blockEntity instanceof TransmitterBlockEntity))
 			return;
 		BlockElementHolder holder = (BlockElementHolder) BlockBoundAttachment.get(world, pos).holder();
 		holder.tick();

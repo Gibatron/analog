@@ -54,6 +54,8 @@ public class AnalogPlugin implements VoicechatPlugin {
 				RadioUtil.transmitOnChannel(serverApi, event.getPacket(), player, channel);
 			}
 		}
+		// Find nearby transmitters and transmit on those too
+		RadioUtil.transmitOnNearbyTransmitters(serverApi, event.getPacket(), sourcePlayer);
 	}
 
 	@Override
