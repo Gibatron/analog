@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "analog:item/gui/radio/stop_transmit_button"
+	}
+}

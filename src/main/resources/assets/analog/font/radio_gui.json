@@ -1,0 +1,29 @@
+{
+	"providers": [
+		{
+			"type": "space",
+			"advances": {
+				"a": -82,
+				"c": -95
+			}
+		},
+		{
+			"type": "bitmap",
+			"file": "analog:gui/radio/main.png",
+			"ascent": 13,
+			"height": 166,
+			"chars": [
+				"b"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "analog:gui/radio/numbers.png",
+			"ascent": -9,
+			"height": 7,
+			"chars": [
+				"\u0030\u0031\u0032\u0033\u0034\u0035\u0036\u0037\u0038\u0039\u003a\u003b\u003c\u003d\u003e\u003f"
+			]
+		}
+	]
+}

@@ -13,8 +13,10 @@ public class ModItems {
 	public static final Item RECEIVER_ITEM = register(new SimpleModeledPolymerBlockItem(new Item.Settings(), ModBlocks.RECEIVER_BLOCK, Items.PAPER), "receiver");
 
 	// GUI Items
-	public static final Item RADIO_TRANSMIT_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_transmit_button");
-	public static final Item RADIO_RECEIVE_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_receive_button");
+	public static final Item RADIO_START_TRANSMIT_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_start_transmit_button");
+	public static final Item RADIO_STOP_TRANSMIT_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_stop_transmit_button");
+	public static final Item RADIO_START_RECEIVE_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_start_receive_button");
+	public static final Item RADIO_STOP_RECEIVE_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_stop_receive_button");
 	public static final Item RADIO_CHANNEL_UP_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_channel_up_button");
 	public static final Item RADIO_CHANNEL_DOWN_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_channel_down_button");
 	public static final Item RADIO_ENABLE_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_enable_button");
