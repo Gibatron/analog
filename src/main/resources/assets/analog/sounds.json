@@ -1,0 +1,10 @@
+{
+  "radio_static": {
+    "subtitle": "subtitles.analog.radio_static",
+    "sounds": [
+      {
+        "name": "analog:radio_static"
+      }
+    ]
+  }
+}

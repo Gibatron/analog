@@ -20,6 +20,7 @@ public class Analog implements ModInitializer {
 		ModItems.initialize();
 		ModBlocks.initialize();
 		ModBlockEntities.initialize();
+		ModSounds.initialize();
 		// Clean up player's encoder and decoder on disconnect
 		ServerPlayConnectionEvents.DISCONNECT.register((handler, server) -> {
 			OpusEncoder encoder = RadioUtil.playerEncoders.remove(handler.player.getUuid());

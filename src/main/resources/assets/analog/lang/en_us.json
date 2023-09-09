@@ -1,5 +1,6 @@
 {
 	"item.analog.radio": "Radio",
 	"block.analog.transmitter": "Transmitter",
-	"block.analog.receiver": "Receiver"
+	"block.analog.receiver": "Receiver",
+	"subtitles.analog.radio_static": "Radio static"
 }

@@ -6,6 +6,7 @@ import de.maxhenkel.voicechat.api.opus.OpusDecoder;
 import de.maxhenkel.voicechat.api.opus.OpusEncoder;
 import de.maxhenkel.voicechat.api.packets.MicrophonePacket;
 import dev.mrturtle.analog.ModItems;
+import dev.mrturtle.analog.ModSounds;
 import dev.mrturtle.analog.block.ReceiverBlockEntity;
 import dev.mrturtle.analog.block.TransmitterBlockEntity;
 import dev.mrturtle.analog.world.GlobalRadioState;
@@ -15,6 +16,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -124,6 +126,7 @@ public class RadioUtil {
 			for (PlayerEntity entity : playersInRange) {
 				serverApi.sendLocationalSoundPacketTo(serverApi.getConnectionOf(entity.getUuid()), packet.locationalSoundPacketBuilder().opusEncodedData(voiceData).position(serverApi.createPosition(player.getX(), player.getY(), player.getZ())).distance(8f).build());
 			}
+			world.playSound(null, player.getBlockPos(), ModSounds.RADIO_STATIC_EVENT, SoundCategory.PLAYERS, 0.5f, 1.0f);
 		}
 		// Receivers
 		server.execute(() -> {
@@ -143,6 +146,7 @@ public class RadioUtil {
 				for (PlayerEntity entity : playersInRange) {
 					serverApi.sendLocationalSoundPacketTo(serverApi.getConnectionOf(entity.getUuid()), packet.locationalSoundPacketBuilder().opusEncodedData(voiceData).position(serverApi.createPosition(receiverPos.getX(), receiverPos.getY(), receiverPos.getZ())).distance(32f).build());
 				}
+				world.playSound(null, receiverPos, ModSounds.RADIO_STATIC_EVENT, SoundCategory.PLAYERS, 0.5f, 1.0f);
 			}
 		});
 	}
