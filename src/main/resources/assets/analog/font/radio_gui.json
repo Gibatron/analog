@@ -3,17 +3,35 @@
 		{
 			"type": "space",
 			"advances": {
-				"a": -82,
-				"c": -95
+				"a": -25,
+				"c": -38
 			}
 		},
 		{
 			"type": "bitmap",
 			"file": "analog:gui/radio/main.png",
-			"ascent": 13,
-			"height": 166,
+			"ascent": 1,
+			"height": 64,
 			"chars": [
 				"b"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "analog:gui/radio/transmitter.png",
+			"ascent": 1,
+			"height": 64,
+			"chars": [
+				"d"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "analog:gui/radio/receiver.png",
+			"ascent": 1,
+			"height": 64,
+			"chars": [
+				"e"
 			]
 		},
 		{
