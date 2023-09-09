@@ -90,7 +90,8 @@ public class RadioUtil {
 	public static void transmitOnChannel(VoicechatServerApi serverApi, MicrophonePacket packet, ServerPlayerEntity sender, int senderChannel) {
 		MinecraftServer server = sender.getServer();
 		ServerWorld world = sender.getServerWorld();
-		byte[] encodedData = packet.getOpusEncodedData();
+		// This makes audio sound bad, figure it out later
+		/*byte[] encodedData = packet.getOpusEncodedData();
 		// Decode data
 		OpusDecoder decoder = playerDecoders.getOrDefault(sender.getUuid(), serverApi.createDecoder());
 		playerDecoders.putIfAbsent(sender.getUuid(), decoder);
@@ -102,7 +103,7 @@ public class RadioUtil {
 		OpusEncoder encoder = playerEncoders.getOrDefault(sender.getUuid(), serverApi.createEncoder());
 		playerEncoders.putIfAbsent(sender.getUuid(), encoder);
 		encoder.resetState();
-		final byte[] voiceData = encoder.encode(decodedData);
+		final byte[] voiceData = encoder.encode(decodedData);*/
 		// Player radios
 		for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
 			if (player == sender)
@@ -124,7 +125,7 @@ public class RadioUtil {
 			// Play voice to nearby players
 			List<PlayerEntity> playersInRange = world.getEntitiesByClass(PlayerEntity.class, Box.of(player.getPos(), 16, 16, 16), (entity) -> true);
 			for (PlayerEntity entity : playersInRange) {
-				serverApi.sendLocationalSoundPacketTo(serverApi.getConnectionOf(entity.getUuid()), packet.locationalSoundPacketBuilder().opusEncodedData(voiceData).position(serverApi.createPosition(player.getX(), player.getY(), player.getZ())).distance(8f).build());
+				serverApi.sendLocationalSoundPacketTo(serverApi.getConnectionOf(entity.getUuid()), packet.locationalSoundPacketBuilder().position(serverApi.createPosition(player.getX(), player.getY(), player.getZ())).distance(8f).build());
 			}
 			world.playSound(null, player.getBlockPos(), ModSounds.RADIO_STATIC_EVENT, SoundCategory.PLAYERS, 0.5f, 1.0f);
 		}
@@ -144,7 +145,7 @@ public class RadioUtil {
 				// Play voice to players nearby receiver
 				List<PlayerEntity> playersInRange = world.getEntitiesByClass(PlayerEntity.class, Box.of(receiverPos.toCenterPos(), 64, 64, 64), (entity) -> true);
 				for (PlayerEntity entity : playersInRange) {
-					serverApi.sendLocationalSoundPacketTo(serverApi.getConnectionOf(entity.getUuid()), packet.locationalSoundPacketBuilder().opusEncodedData(voiceData).position(serverApi.createPosition(receiverPos.getX(), receiverPos.getY(), receiverPos.getZ())).distance(32f).build());
+					serverApi.sendLocationalSoundPacketTo(serverApi.getConnectionOf(entity.getUuid()), packet.locationalSoundPacketBuilder().position(serverApi.createPosition(receiverPos.getX(), receiverPos.getY(), receiverPos.getZ())).distance(32f).build());
 				}
 				world.playSound(null, receiverPos, ModSounds.RADIO_STATIC_EVENT, SoundCategory.PLAYERS, 0.5f, 1.0f);
 			}
