@@ -12,7 +12,7 @@ import net.minecraft.util.math.Box;
 import java.util.List;
 
 public class AnalogPlugin implements VoicechatPlugin {
-	public VoicechatServerApi api;
+	public static VoicechatServerApi API;
 
 	public static String RADIO_CATEGORY = "radios";
 
@@ -23,14 +23,14 @@ public class AnalogPlugin implements VoicechatPlugin {
 	}
 
 	private void onServerStarted(VoicechatServerStartedEvent event) {
-		api = event.getVoicechat();
+		API = event.getVoicechat();
 		// Register radio volume category
-		VolumeCategory radios = api.volumeCategoryBuilder()
+		VolumeCategory radios = API.volumeCategoryBuilder()
 				.setId(RADIO_CATEGORY)
 				.setName("Radios")
 				.setDescription("The volume of all radios")
 				.build();
-		api.registerVolumeCategory(radios);
+		API.registerVolumeCategory(radios);
 	}
 
 	private void onMicrophonePacket(MicrophonePacketEvent event) {
