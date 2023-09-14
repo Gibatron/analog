@@ -16,6 +16,10 @@ public class RadioAudioUtil {
 		}
 	}
 
+	public static float getAudioDuration(Path path) {
+		return (path.toFile().length() / (FORMAT.getFrameSize() * FORMAT.getFrameRate()));
+	}
+
 	public static short[] convertStreamToArray(AudioInputStream stream) throws Exception {
 		AudioFormat streamFormat = stream.getFormat();
 		AudioFormat arrayFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, streamFormat.getSampleRate(), 16, streamFormat.getChannels(), streamFormat.getChannels() * 2, streamFormat.getSampleRate(), false);

@@ -7,8 +7,8 @@ import de.maxhenkel.voicechat.api.audiochannel.LocationalAudioChannel;
 import de.maxhenkel.voicechat.api.opus.OpusDecoder;
 import de.maxhenkel.voicechat.api.opus.OpusEncoder;
 import de.maxhenkel.voicechat.api.packets.MicrophonePacket;
+import dev.mrturtle.analog.AnalogPlugin;
 import dev.mrturtle.analog.ModItems;
-import dev.mrturtle.analog.ModSounds;
 import dev.mrturtle.analog.block.ReceiverBlockEntity;
 import dev.mrturtle.analog.block.TransmitterBlockEntity;
 import dev.mrturtle.analog.world.GlobalRadioState;
@@ -18,7 +18,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
@@ -27,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RadioUtil {
 	public static HashMap<UUID, OpusDecoder> playerDecoders = new HashMap<>();
@@ -111,17 +111,16 @@ public class RadioUtil {
 		for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
 			if (player == sender)
 				continue;
-			if (isReceivingChannel(player, senderChannel))
+			if (!isReceivingChannel(player, senderChannel))
 				continue;
 			// Play voice to nearby players
 			List<PlayerEntity> playersInRange = world.getEntitiesByClass(PlayerEntity.class, Box.of(player.getPos(), 16, 16, 16), (entity) -> true);
 			for (PlayerEntity entity : playersInRange) {
 				// Prioritize player's handheld radio over another player's radio
-				if (entity != sender && isReceivingChannel(entity, senderChannel))
+				if (entity != player && entity != sender && isReceivingChannel(entity, senderChannel))
 					continue;
 				serverApi.sendLocationalSoundPacketTo(serverApi.getConnectionOf(entity.getUuid()), packet.locationalSoundPacketBuilder().opusEncodedData(voiceData).position(serverApi.createPosition(player.getX(), player.getY(), player.getZ())).distance(8f).build());
 			}
-			world.playSound(null, player.getBlockPos(), ModSounds.RADIO_STATIC_EVENT, SoundCategory.PLAYERS, 0.5f, 1.0f);
 		}
 		// Receivers
 		server.execute(() -> {
@@ -144,13 +143,17 @@ public class RadioUtil {
 						continue;
 					serverApi.sendLocationalSoundPacketTo(serverApi.getConnectionOf(entity.getUuid()), packet.locationalSoundPacketBuilder().opusEncodedData(voiceData).position(serverApi.createPosition(receiverPos.getX(), receiverPos.getY(), receiverPos.getZ())).distance(32f).build());
 				}
-				world.playSound(null, receiverPos, ModSounds.RADIO_STATIC_EVENT, SoundCategory.PLAYERS, 0.5f, 1.0f);
 			}
 		});
 	}
 
 	public static void transmitDataOnChannel(VoicechatServerApi serverApi, ServerWorld world, short[] audioData, int senderChannel) {
+		transmitDataOnChannel(serverApi, world, audioData, senderChannel, null);
+	}
+
+	public static void transmitDataOnChannel(VoicechatServerApi serverApi, ServerWorld world, short[] audioData, int senderChannel, Runnable onAudioStopped) {
 		MinecraftServer server = world.getServer();
+		AtomicBoolean hasSetRunnable = new AtomicBoolean(false);
 		for (ServerPlayerEntity player : server.getPlayerManager().getPlayerList()) {
 			if (!isReceivingChannel(player, senderChannel))
 				continue;
@@ -159,7 +162,12 @@ public class RadioUtil {
 			if (channel == null)
 				continue;
 			channel.setDistance(8f);
+			channel.setCategory(AnalogPlugin.RADIO_CATEGORY);
 			AudioPlayer audioPlayer = serverApi.createAudioPlayer(channel, serverApi.createEncoder(), audioData);
+			if (!hasSetRunnable.get()) {
+				audioPlayer.setOnStopped(onAudioStopped);
+				hasSetRunnable.set(true);
+			}
 			audioPlayer.startPlaying();
 		}
 		// Receivers
@@ -176,7 +184,15 @@ public class RadioUtil {
 				if (receiver.channel != senderChannel)
 					continue;
 				LocationalAudioChannel channel = serverApi.createLocationalAudioChannel(UUID.randomUUID(), serverApi.fromServerLevel(world), serverApi.createPosition(receiverPos.toCenterPos().getX(), receiverPos.toCenterPos().getY(), receiverPos.toCenterPos().getZ()));
+				if (channel == null)
+					continue;
+				channel.setDistance(8f);
+				channel.setCategory(AnalogPlugin.RADIO_CATEGORY);
 				AudioPlayer audioPlayer = serverApi.createAudioPlayer(channel, serverApi.createEncoder(), audioData);
+				if (!hasSetRunnable.get()) {
+					audioPlayer.setOnStopped(onAudioStopped);
+					hasSetRunnable.set(true);
+				}
 				audioPlayer.startPlaying();
 			}
 		});
