@@ -5,6 +5,7 @@ import dev.mrturtle.analog.AnalogPlugin;
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,7 +15,8 @@ public class RadioAudioUtil {
 
 	public static short[] getAudioData(Path path) throws Exception {
 		try (InputStream input = Files.newInputStream(path)) {
-			AudioInputStream stream = AudioSystem.getAudioInputStream(input);
+			InputStream bufferedInput = new BufferedInputStream(input);
+			AudioInputStream stream = AudioSystem.getAudioInputStream(bufferedInput);
 			return convertStreamToArray(stream);
 		}
 	}
