@@ -1,10 +1,13 @@
 package dev.mrturtle.analog;
 
 import dev.mrturtle.analog.item.*;
+import eu.pb4.polymer.core.api.item.PolymerItemGroupUtils;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 public class ModItems {
@@ -26,7 +29,18 @@ public class ModItems {
 	public static final Item TRANSMITTER_HOLDER_ITEM = register(new SimpleModeledPolymerHolderItem(new Item.Settings(), Items.PAPER), "transmitter_holder");
 	public static final Item RECEIVER_HOLDER_ITEM = register(new SimpleModeledPolymerHolderItem(new Item.Settings(), Items.PAPER), "receiver_holder");
 
-	public static void initialize() {}
+	public static void initialize() {
+		PolymerItemGroupUtils.registerPolymerItemGroup(new Identifier("analog", "group"), ItemGroup.create(ItemGroup.Row.BOTTOM, -1)
+				.icon(RADIO_ITEM::getDefaultStack)
+				.displayName(Text.translatable("itemGroup.analog"))
+				.entries(((context, entries) -> {
+					entries.add(RADIO_ITEM);
+					entries.add(TRANSMITTER_ITEM);
+					entries.add(RECEIVER_ITEM);
+				}))
+				.build()
+		);
+	}
 
 	public static <T extends Item> T register(T item, String ID) {
 		Identifier itemID = new Identifier("analog", ID);

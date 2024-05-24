@@ -3,10 +3,15 @@
 	"id": "analog",
 	"version": "${version}",
 	"name": "Analog",
-	"description": "Adds simple analog radios",
+	"description": "An addon for Simple Voice Chat that adds handheld radios as well as placeable transmitters and receivers.",
 	"authors": [
-		"Me!"
+		"MrTurtle"
 	],
+	"contact": {
+		"homepage": "https://modrinth.com/mod/analog",
+		"sources": "https://github.com/Gibatron/analog",
+		"issues": "https://github.com/Gibatron/analog/issues"
+	},
 	"license": "MIT",
 	"environment": "*",
 	"entrypoints": {
@@ -24,6 +29,7 @@
 		"fabricloader": ">=0.14.22",
 		"minecraft": "~1.20.1",
 		"java": ">=17",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"voicechat": "*"
 	}
 }
