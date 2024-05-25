@@ -24,14 +24,14 @@ public class RadioItemGui extends SimpleGui {
 		createReceiveButton();
 		createChannelText();
 		setSlot(0, new GuiElementBuilder(ModItems.RADIO_CHANNEL_DOWN_BUTTON)
-				.setName(Text.literal("Channel Down"))
+				.setName(Text.translatable("gui.analog.radio.channel_down"))
 				.setCallback(() -> {
 					int currentChannel = RadioUtil.getRadioChannel(radioStack);
 					RadioUtil.setRadioChannel(radioStack, Math.max(0, currentChannel - 1));
 					createChannelText();
 				}).build());
 		setSlot(2, new GuiElementBuilder(ModItems.RADIO_CHANNEL_UP_BUTTON)
-				.setName(Text.literal("Channel Up"))
+				.setName(Text.translatable("gui.analog.radio.channel_up"))
 				.setCallback(() -> {
 					int currentChannel = RadioUtil.getRadioChannel(radioStack);
 					RadioUtil.setRadioChannel(radioStack, Math.min(99, currentChannel + 1));
@@ -50,7 +50,7 @@ public class RadioItemGui extends SimpleGui {
 	private void createEnableButton() {
 		boolean isEnabled = RadioUtil.isRadioEnabled(radioStack);
 		setSlot(4, new GuiElementBuilder(isEnabled ? ModItems.RADIO_DISABLE_BUTTON : ModItems.RADIO_ENABLE_BUTTON)
-				.setName(Text.literal(isEnabled ? "Turn Off" : "Turn On"))
+				.setName(Text.translatable(isEnabled ? "gui.analog.radio.turn_off" : "gui.analog.radio.turn_on"))
 				.setCallback(() -> {
 					RadioUtil.setRadioEnabled(radioStack, !isEnabled);
 					createEnableButton();
@@ -60,7 +60,7 @@ public class RadioItemGui extends SimpleGui {
 	private void createTransmitButton() {
 		boolean isTransmitting = RadioUtil.isRadioTransmitting(radioStack);
 		setSlot(5, new GuiElementBuilder(isTransmitting ? ModItems.RADIO_STOP_TRANSMIT_BUTTON : ModItems.RADIO_START_TRANSMIT_BUTTON)
-				.setName(Text.literal(isTransmitting ? "Stop Transmitting" : "Start Transmitting"))
+				.setName(Text.translatable(isTransmitting ? "gui.analog.radio.stop_transmitting" : "gui.analog.radio.start_transmitting"))
 				.setCallback(() -> {
 					RadioUtil.setRadioTransmitting(radioStack, !isTransmitting);
 					createTransmitButton();
@@ -70,7 +70,7 @@ public class RadioItemGui extends SimpleGui {
 	private void createReceiveButton() {
 		boolean isReceiving = RadioUtil.isRadioReceiving(radioStack);
 		setSlot(3, new GuiElementBuilder(isReceiving ? ModItems.RADIO_STOP_RECEIVE_BUTTON : ModItems.RADIO_START_RECEIVE_BUTTON)
-				.setName(Text.literal(isReceiving ? "Stop Receiving" : "Start Receiving"))
+				.setName(Text.translatable(isReceiving ? "gui.analog.radio.stop_receiving" : "gui.analog.radio.start_receiving"))
 				.setCallback(() -> {
 					RadioUtil.setRadioReceiving(radioStack, !isReceiving);
 					createReceiveButton();

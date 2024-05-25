@@ -2,6 +2,13 @@
 	"item.analog.radio": "Radio",
 	"block.analog.transmitter": "Transmitter",
 	"block.analog.receiver": "Receiver",
-	"subtitles.analog.radio_static": "Radio static",
-	"itemGroup.analog": "Analog"
+	"itemGroup.analog": "Analog",
+	"gui.analog.radio.channel_down": "Channel Down",
+	"gui.analog.radio.channel_up": "Channel Up",
+	"gui.analog.radio.turn_on": "Turn On",
+	"gui.analog.radio.turn_off": "Turn Off",
+	"gui.analog.radio.start_transmitting": "Start Transmitting",
+	"gui.analog.radio.stop_transmitting": "Stop Transmitting",
+	"gui.analog.radio.start_receiving": "Start Receiving",
+	"gui.analog.radio.stop_receiving": "Stop Receiving"
 }

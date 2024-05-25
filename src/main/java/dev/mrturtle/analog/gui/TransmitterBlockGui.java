@@ -21,14 +21,14 @@ public class TransmitterBlockGui extends SimpleGui {
 		createEnableButton();
 		createChannelText();
 		setSlot(0, new GuiElementBuilder(ModItems.RADIO_CHANNEL_DOWN_BUTTON)
-				.setName(Text.literal("Channel Down"))
+				.setName(Text.translatable("gui.analog.radio.channel_down"))
 				.setCallback(() -> {
 					int currentChannel = transmitter.channel;
 					transmitter.channel = Math.max(0, currentChannel - 1);
 					createChannelText();
 				}).build());
 		setSlot(2, new GuiElementBuilder(ModItems.RADIO_CHANNEL_UP_BUTTON)
-				.setName(Text.literal("Channel Up"))
+				.setName(Text.translatable("gui.analog.radio.channel_up"))
 				.setCallback(() -> {
 					int currentChannel = transmitter.channel;
 					transmitter.channel = Math.min(99, currentChannel + 1);
@@ -47,7 +47,7 @@ public class TransmitterBlockGui extends SimpleGui {
 	private void createEnableButton() {
 		boolean isEnabled = transmitter.enabled;
 		setSlot(4, new GuiElementBuilder(isEnabled ? ModItems.RADIO_DISABLE_BUTTON : ModItems.RADIO_ENABLE_BUTTON)
-				.setName(Text.literal(isEnabled ? "Turn Off" : "Turn On"))
+				.setName(Text.translatable(isEnabled ? "gui.analog.radio.turn_off" : "gui.analog.radio.turn_on"))
 				.setCallback(() -> {
 					transmitter.enabled = !isEnabled;
 					createEnableButton();

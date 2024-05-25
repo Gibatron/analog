@@ -11,8 +11,8 @@ import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.util.Identifier;
 
 public class ModBlocks {
-	public static final Block TRANSMITTER_BLOCK = register(new TransmitterBlock(AbstractBlock.Settings.create().pistonBehavior(PistonBehavior.BLOCK).sounds(BlockSoundGroup.WOOD).strength(3.0f).nonOpaque()), "transmitter");
-	public static final Block RECEIVER_BLOCK = register(new ReceiverBlock(AbstractBlock.Settings.create().pistonBehavior(PistonBehavior.BLOCK).sounds(BlockSoundGroup.WOOD).strength(3.0f).nonOpaque()), "receiver");
+	public static final Block TRANSMITTER_BLOCK = register(new TransmitterBlock(AbstractBlock.Settings.create().pistonBehavior(PistonBehavior.BLOCK).sounds(BlockSoundGroup.WOOD).strength(1.5f).nonOpaque()), "transmitter");
+	public static final Block RECEIVER_BLOCK = register(new ReceiverBlock(AbstractBlock.Settings.create().pistonBehavior(PistonBehavior.BLOCK).sounds(BlockSoundGroup.WOOD).strength(1.5f).nonOpaque()), "receiver");
 
 	public static void initialize() {}
 
