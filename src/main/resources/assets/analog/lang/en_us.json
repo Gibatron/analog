@@ -1,14 +1,20 @@
 {
 	"item.analog.radio": "Radio",
+	"item.analog.radio.tooltip.open": "Press [%s] to open menu",
+	"item.analog.radio.tooltip.transmit": "Press [%s] to toggle transmitting",
 	"block.analog.transmitter": "Transmitter",
 	"block.analog.receiver": "Receiver",
 	"itemGroup.analog": "Analog",
 	"gui.analog.radio.channel_down": "Channel Down",
 	"gui.analog.radio.channel_up": "Channel Up",
+	"gui.analog.radio.set_channel": "Enter Channel",
 	"gui.analog.radio.turn_on": "Turn On",
 	"gui.analog.radio.turn_off": "Turn Off",
 	"gui.analog.radio.start_transmitting": "Start Transmitting",
 	"gui.analog.radio.stop_transmitting": "Stop Transmitting",
 	"gui.analog.radio.start_receiving": "Start Receiving",
-	"gui.analog.radio.stop_receiving": "Stop Receiving"
+	"gui.analog.radio.stop_receiving": "Stop Receiving",
+	"gui.analog.radio.set_channel.title": "Set Channel Number",
+	"gui.analog.radio.started_transmitting": "Started Transmitting on Channel %s",
+	"gui.analog.radio.stopped_transmitting": "Stopped Transmitting on Channel %s"
 }

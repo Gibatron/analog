@@ -2,7 +2,9 @@
 	"required": true,
 	"package": "dev.mrturtle.analog.mixin",
 	"compatibilityLevel": "JAVA_17",
-	"mixins": [],
+	"mixins": [
+		"ServerPlayNetworkHandler"
+	],
 	"injectors": {
 		"defaultRequire": 1
 	}

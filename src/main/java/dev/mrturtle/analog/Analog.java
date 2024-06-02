@@ -2,6 +2,7 @@ package dev.mrturtle.analog;
 
 import de.maxhenkel.voicechat.api.opus.OpusDecoder;
 import de.maxhenkel.voicechat.api.opus.OpusEncoder;
+import dev.mrturtle.analog.config.ConfigManager;
 import dev.mrturtle.analog.util.RadioUtil;
 import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
 import net.fabricmc.api.ModInitializer;
@@ -15,6 +16,7 @@ public class Analog implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ConfigManager.loadConfig();
 		PolymerResourcePackUtils.addModAssets("analog");
 		PolymerResourcePackUtils.markAsRequired();
 		ModItems.initialize();

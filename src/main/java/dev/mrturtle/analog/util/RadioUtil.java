@@ -11,6 +11,7 @@ import dev.mrturtle.analog.AnalogPlugin;
 import dev.mrturtle.analog.ModItems;
 import dev.mrturtle.analog.block.ReceiverBlockEntity;
 import dev.mrturtle.analog.block.TransmitterBlockEntity;
+import dev.mrturtle.analog.config.ConfigManager;
 import dev.mrturtle.analog.world.GlobalRadioState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
@@ -114,7 +115,8 @@ public class RadioUtil {
 			if (!isReceivingChannel(player, senderChannel))
 				continue;
 			// Play voice to nearby players
-			List<PlayerEntity> playersInRange = world.getEntitiesByClass(PlayerEntity.class, Box.of(player.getPos(), 16, 16, 16), (entity) -> true);
+			int listeningDistance = ConfigManager.config.radioListeningDistance * 2;
+			List<PlayerEntity> playersInRange = world.getEntitiesByClass(PlayerEntity.class, Box.of(player.getPos(), listeningDistance, listeningDistance, listeningDistance), (entity) -> true);
 			for (PlayerEntity entity : playersInRange) {
 				// Prioritize player's handheld radio over another player's radio
 				if (entity != player && entity != sender && isReceivingChannel(entity, senderChannel))
@@ -205,7 +207,7 @@ public class RadioUtil {
 		Vec3d pos = sender.getPos();
 		server.execute(() -> {
 			for (BlockPos transmitterPos : transmitters) {
-				if (pos.distanceTo(transmitterPos.toCenterPos()) > 8f)
+				if (pos.distanceTo(transmitterPos.toCenterPos()) > ConfigManager.config.radioListeningDistance)
 					continue;
 				TransmitterBlockEntity transmitter = (TransmitterBlockEntity) world.getBlockEntity(transmitterPos);
 				if (transmitter == null)

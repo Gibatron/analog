@@ -22,6 +22,7 @@ public class ModItems {
 	public static final Item RADIO_STOP_RECEIVE_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_stop_receive_button");
 	public static final Item RADIO_CHANNEL_UP_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_channel_up_button");
 	public static final Item RADIO_CHANNEL_DOWN_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_channel_down_button");
+	public static final Item RADIO_SET_CHANNEL_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_set_channel_button");
 	public static final Item RADIO_ENABLE_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_enable_button");
 	public static final Item RADIO_DISABLE_BUTTON = register(new SimpleGuiPolymerItem(new Item.Settings(), Items.PAPER), "radio_disable_button");
 

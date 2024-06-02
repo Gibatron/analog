@@ -4,6 +4,7 @@ import de.maxhenkel.voicechat.api.*;
 import de.maxhenkel.voicechat.api.events.EventRegistration;
 import de.maxhenkel.voicechat.api.events.MicrophonePacketEvent;
 import de.maxhenkel.voicechat.api.events.VoicechatServerStartedEvent;
+import dev.mrturtle.analog.config.ConfigManager;
 import dev.mrturtle.analog.util.RadioUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -42,7 +43,8 @@ public class AnalogPlugin implements VoicechatPlugin {
 			return;
 		ServerPlayerEntity sourcePlayer = (ServerPlayerEntity) connection.getPlayer().getPlayer();
 		// Find nearby players that might be carrying radios that could transmit
-		List<ServerPlayerEntity> playersInRange = sourcePlayer.getServerWorld().getEntitiesByClass(ServerPlayerEntity.class, Box.of(sourcePlayer.getPos(), 16, 16, 16), (entity) -> true);
+		int listeningDistance = ConfigManager.config.radioListeningDistance * 2;
+		List<ServerPlayerEntity> playersInRange = sourcePlayer.getServerWorld().getEntitiesByClass(ServerPlayerEntity.class, Box.of(sourcePlayer.getPos(), listeningDistance, listeningDistance, listeningDistance), (entity) -> true);
 		for (ServerPlayerEntity player : playersInRange) {
 			List<ItemStack> radios = RadioUtil.getRadios(player);
 			for (ItemStack stack : radios) {

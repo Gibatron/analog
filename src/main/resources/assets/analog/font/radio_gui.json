@@ -4,7 +4,10 @@
 			"type": "space",
 			"advances": {
 				"a": -25,
-				"c": -38
+				"c": -38,
+				"g": -60,
+				"h": -120,
+				"z": 6
 			}
 		},
 		{
@@ -32,6 +35,15 @@
 			"height": 64,
 			"chars": [
 				"e"
+			]
+		},
+		{
+			"type": "bitmap",
+			"file": "analog:gui/radio/select_channel.png",
+			"ascent": 13,
+			"height": 64,
+			"chars": [
+				"f"
 			]
 		},
 		{

@@ -1,6 +1,7 @@
 package dev.mrturtle.analog.gui;
 
 import dev.mrturtle.analog.ModItems;
+import dev.mrturtle.analog.config.ConfigManager;
 import dev.mrturtle.analog.util.RadioUtil;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
@@ -30,11 +31,22 @@ public class RadioItemGui extends SimpleGui {
 					RadioUtil.setRadioChannel(radioStack, Math.max(0, currentChannel - 1));
 					createChannelText();
 				}).build());
+		setSlot(1, new GuiElementBuilder(ModItems.RADIO_SET_CHANNEL_BUTTON)
+				.setName(Text.translatable("gui.analog.radio.set_channel"))
+				.setCallback(() -> {
+					RadioSelectChannelGui gui = new RadioSelectChannelGui(player, RadioUtil.getRadioChannel(radioStack), (channel) -> {
+						RadioUtil.setRadioChannel(radioStack, channel);
+						RadioItemGui radioGui = new RadioItemGui(player, radioStack);
+						radioGui.open();
+					});
+					gui.open();
+				}).build());
 		setSlot(2, new GuiElementBuilder(ModItems.RADIO_CHANNEL_UP_BUTTON)
 				.setName(Text.translatable("gui.analog.radio.channel_up"))
 				.setCallback(() -> {
+					int maxRadioChannel = ConfigManager.config.maxRadioChannels - 1;
 					int currentChannel = RadioUtil.getRadioChannel(radioStack);
-					RadioUtil.setRadioChannel(radioStack, Math.min(99, currentChannel + 1));
+					RadioUtil.setRadioChannel(radioStack, Math.min(maxRadioChannel, currentChannel + 1));
 					createChannelText();
 				}).build());
 	}
@@ -44,7 +56,8 @@ public class RadioItemGui extends SimpleGui {
 		String channelText = String.valueOf(currentChannel);
 		if (channelText.length() == 1)
 			channelText = "0" + channelText;
-		setTitle(getDefaultTitle().append(Text.literal(channelText)));
+		String offsetString = "z".repeat(channelText.length() - 2);
+		setTitle(Text.literal(offsetString).setStyle(getTitleStyle()).append(getDefaultTitle().append(Text.literal(channelText))));
 	}
 
 	private void createEnableButton() {
@@ -78,6 +91,10 @@ public class RadioItemGui extends SimpleGui {
 	}
 
 	public MutableText getDefaultTitle() {
-		return Text.literal("abc").setStyle(Style.EMPTY.withColor(Formatting.WHITE).withFont(new Identifier("analog", "radio_gui")));
+		return Text.literal("abc").setStyle(getTitleStyle());
+	}
+
+	public Style getTitleStyle() {
+		return Style.EMPTY.withColor(Formatting.WHITE).withFont(new Identifier("analog", "radio_gui"));
 	}
 }

@@ -2,6 +2,7 @@ package dev.mrturtle.analog.gui;
 
 import dev.mrturtle.analog.ModItems;
 import dev.mrturtle.analog.block.ReceiverBlockEntity;
+import dev.mrturtle.analog.config.ConfigManager;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import net.minecraft.screen.ScreenHandlerType;
@@ -27,11 +28,22 @@ public class ReceiverBlockGui extends SimpleGui {
 					receiver.channel = Math.max(0, currentChannel - 1);
 					createChannelText();
 				}).build());
+		setSlot(1, new GuiElementBuilder(ModItems.RADIO_SET_CHANNEL_BUTTON)
+				.setName(Text.translatable("gui.analog.radio.set_channel"))
+				.setCallback(() -> {
+					RadioSelectChannelGui gui = new RadioSelectChannelGui(player, receiver.channel, (channel) -> {
+						receiver.channel = channel;
+						ReceiverBlockGui radioGui = new ReceiverBlockGui(player, receiver);
+						radioGui.open();
+					});
+					gui.open();
+				}).build());
 		setSlot(2, new GuiElementBuilder(ModItems.RADIO_CHANNEL_UP_BUTTON)
 				.setName(Text.translatable("gui.analog.radio.channel_up"))
 				.setCallback(() -> {
+					int maxRadioChannel = ConfigManager.config.maxRadioChannels - 1;
 					int currentChannel = receiver.channel;
-					receiver.channel = Math.min(99, currentChannel + 1);
+					receiver.channel = Math.min(maxRadioChannel, currentChannel + 1);
 					createChannelText();
 				}).build());
 	}
