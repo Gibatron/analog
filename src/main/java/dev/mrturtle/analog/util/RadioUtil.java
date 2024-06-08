@@ -8,20 +8,22 @@ import de.maxhenkel.voicechat.api.opus.OpusDecoder;
 import de.maxhenkel.voicechat.api.opus.OpusEncoder;
 import de.maxhenkel.voicechat.api.packets.MicrophonePacket;
 import dev.mrturtle.analog.AnalogPlugin;
+import dev.mrturtle.analog.ModDataComponents;
 import dev.mrturtle.analog.ModItems;
 import dev.mrturtle.analog.block.ReceiverBlockEntity;
 import dev.mrturtle.analog.block.TransmitterBlockEntity;
 import dev.mrturtle.analog.config.ConfigManager;
+import dev.mrturtle.analog.item.component.RadioComponent;
 import dev.mrturtle.analog.world.GlobalRadioState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.PersistentState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,63 +34,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class RadioUtil {
 	public static HashMap<UUID, OpusDecoder> playerDecoders = new HashMap<>();
 	public static HashMap<UUID, OpusEncoder> playerEncoders = new HashMap<>();
-
-	// You could argue these would make more sense as static methods in RadioItem, and you'd probably be right.
-	public static int getRadioChannel(ItemStack stack) {
-		NbtCompound nbt = stack.getOrCreateNbt();
-		int channel = 0;
-		if (nbt.contains("channel"))
-			channel = nbt.getInt("channel");
-		return channel;
-	}
-
-	public static boolean isRadioTransmitting(ItemStack stack) {
-		NbtCompound nbt = stack.getOrCreateNbt();
-		boolean transmitting = false;
-		if (nbt.contains("isTransmitting"))
-			transmitting = nbt.getBoolean("isTransmitting");
-		return transmitting;
-	}
-
-	public static boolean isRadioReceiving(ItemStack stack) {
-		NbtCompound nbt = stack.getOrCreateNbt();
-		boolean receiving = true;
-		if (nbt.contains("isReceiving"))
-			receiving = nbt.getBoolean("isReceiving");
-		return receiving;
-	}
-
-	public static boolean isRadioEnabled(ItemStack stack) {
-		NbtCompound nbt = stack.getOrCreateNbt();
-		boolean receiving = false;
-		if (nbt.contains("isEnabled"))
-			receiving = nbt.getBoolean("isEnabled");
-		return receiving;
-	}
-
-	public static void setRadioChannel(ItemStack stack, int channel) {
-		NbtCompound nbt = stack.getOrCreateNbt();
-		nbt.putInt("channel", channel);
-		stack.setNbt(nbt);
-	}
-
-	public static void setRadioTransmitting(ItemStack stack, boolean transmitting) {
-		NbtCompound nbt = stack.getOrCreateNbt();
-		nbt.putBoolean("isTransmitting", transmitting);
-		stack.setNbt(nbt);
-	}
-
-	public static void setRadioReceiving(ItemStack stack, boolean receiving) {
-		NbtCompound nbt = stack.getOrCreateNbt();
-		nbt.putBoolean("isReceiving", receiving);
-		stack.setNbt(nbt);
-	}
-
-	public static void setRadioEnabled(ItemStack stack, boolean enabled) {
-		NbtCompound nbt = stack.getOrCreateNbt();
-		nbt.putBoolean("isEnabled", enabled);
-		stack.setNbt(nbt);
-	}
 
 	public static void transmitOnChannel(VoicechatServerApi serverApi, MicrophonePacket packet, ServerPlayerEntity sender, int senderChannel) {
 		MinecraftServer server = sender.getServer();
@@ -222,11 +167,12 @@ public class RadioUtil {
 	public static boolean isReceivingChannel(PlayerEntity player, int channel) {
 		List<ItemStack> radios = RadioUtil.getRadios(player);
 		for (ItemStack stack : radios) {
-			if (!RadioUtil.isRadioEnabled(stack))
+			RadioComponent component = stack.getOrDefault(ModDataComponents.RADIO, RadioComponent.DEFAULT);
+			if (!component.enabled())
 				continue;
-			if (!RadioUtil.isRadioReceiving(stack))
+			if (!component.receive())
 				continue;
-			if (RadioUtil.getRadioChannel(stack) != channel)
+			if (component.channel() != channel)
 				continue;
 			return true;
 		}
@@ -247,6 +193,11 @@ public class RadioUtil {
 	}
 
 	public static GlobalRadioState getGlobalRadioState(ServerWorld world) {
-		return world.getPersistentStateManager().getOrCreate(GlobalRadioState::fromNbt, GlobalRadioState::new, "globalRadios");
+		var type = new PersistentState.Type<>(
+				GlobalRadioState::new,
+				(nbt, wrapperLookup) -> GlobalRadioState.fromNbt(nbt),
+				null
+		);
+		return world.getPersistentStateManager().getOrCreate(type, "globalRadios");
 	}
 }

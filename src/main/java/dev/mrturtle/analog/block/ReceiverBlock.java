@@ -1,5 +1,6 @@
 package dev.mrturtle.analog.block;
 
+import com.mojang.serialization.MapCodec;
 import dev.mrturtle.analog.ModItems;
 import dev.mrturtle.analog.gui.ReceiverBlockGui;
 import dev.mrturtle.analog.util.RadioUtil;
@@ -19,7 +20,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -27,6 +27,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class ReceiverBlock extends BlockWithEntity implements PolymerBlock, BlockWithElementHolder {
+	public static final MapCodec<ReceiverBlock> CODEC = createCodec(ReceiverBlock::new);
 	public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
 
 	public ReceiverBlock(Settings settings) {
@@ -35,7 +36,7 @@ public class ReceiverBlock extends BlockWithEntity implements PolymerBlock, Bloc
 	}
 
 	@Override
-	public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+	protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
 		ReceiverBlockGui gui = new ReceiverBlockGui((ServerPlayerEntity) player, (ReceiverBlockEntity) world.getBlockEntity(pos));
 		gui.open();
 		return ActionResult.SUCCESS;
@@ -64,8 +65,8 @@ public class ReceiverBlock extends BlockWithEntity implements PolymerBlock, Bloc
 	}
 
 	@Override
-	public Block getPolymerBlock(BlockState state) {
-		return Blocks.BARRIER;
+	public BlockState getPolymerBlockState(BlockState state) {
+		return Blocks.BARRIER.getDefaultState();
 	}
 
 	@Override
@@ -85,5 +86,10 @@ public class ReceiverBlock extends BlockWithEntity implements PolymerBlock, Bloc
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
 		return ReceiverBlockEntity::tick;
+	}
+
+	@Override
+	protected MapCodec<? extends BlockWithEntity> getCodec() {
+		return CODEC;
 	}
 }

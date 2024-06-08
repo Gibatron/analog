@@ -4,11 +4,13 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.PersistentState;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class GlobalRadioState extends PersistentState {
 	private final ArrayList<BlockPos> transmitterList;
@@ -52,21 +54,27 @@ public class GlobalRadioState extends PersistentState {
 		NbtList transmitterList = tag.getList("globalTransmitters", NbtElement.COMPOUND_TYPE);
 		for (NbtElement element : transmitterList) {
 			NbtCompound compound = (NbtCompound) element;
-			state.transmitterList.add(NbtHelper.toBlockPos(compound));
+			Optional<BlockPos> pos = NbtHelper.toBlockPos(compound, "pos");
+			if (pos.isPresent())
+				state.transmitterList.add(pos.get());
 		}
 		NbtList receiverList = tag.getList("globalReceivers", NbtElement.COMPOUND_TYPE);
 		for (NbtElement element : receiverList) {
 			NbtCompound compound = (NbtCompound) element;
-			state.receiverList.add(NbtHelper.toBlockPos(compound));
+			Optional<BlockPos> pos = NbtHelper.toBlockPos(compound, "pos");
+			if (pos.isPresent())
+				state.receiverList.add(pos.get());
 		}
 		return state;
 	}
 
 	@Override
-	public NbtCompound writeNbt(NbtCompound tag) {
+	public NbtCompound writeNbt(NbtCompound tag, RegistryWrapper.WrapperLookup registryLookup) {
 		NbtList transmitterList = new NbtList();
 		for (BlockPos pos : this.transmitterList) {
-			transmitterList.add(NbtHelper.fromBlockPos(pos));
+			NbtCompound compound = new NbtCompound();
+			compound.put("pos", NbtHelper.fromBlockPos(pos));
+			transmitterList.add(compound);
 		}
 		tag.put("globalTransmitters", transmitterList);
 		NbtList receiverList = new NbtList();

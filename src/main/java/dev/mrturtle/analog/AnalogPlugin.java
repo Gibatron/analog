@@ -5,6 +5,7 @@ import de.maxhenkel.voicechat.api.events.EventRegistration;
 import de.maxhenkel.voicechat.api.events.MicrophonePacketEvent;
 import de.maxhenkel.voicechat.api.events.VoicechatServerStartedEvent;
 import dev.mrturtle.analog.config.ConfigManager;
+import dev.mrturtle.analog.item.component.RadioComponent;
 import dev.mrturtle.analog.util.RadioUtil;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -48,11 +49,12 @@ public class AnalogPlugin implements VoicechatPlugin {
 		for (ServerPlayerEntity player : playersInRange) {
 			List<ItemStack> radios = RadioUtil.getRadios(player);
 			for (ItemStack stack : radios) {
-				if (!RadioUtil.isRadioEnabled(stack))
+				RadioComponent component = stack.getOrDefault(ModDataComponents.RADIO, RadioComponent.DEFAULT);
+				if (!component.enabled())
 					continue;
-				if (!RadioUtil.isRadioTransmitting(stack))
+				if (!component.transmit())
 					continue;
-				int channel = RadioUtil.getRadioChannel(stack);
+				int channel = component.channel();
 				RadioUtil.transmitOnChannel(serverApi, event.getPacket(), player, channel);
 			}
 		}

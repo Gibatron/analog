@@ -17,6 +17,6 @@
 		".|"
 	],
 	"result": {
-		"item": "analog:transmitter"
+		"id": "analog:transmitter"
 	}
 }

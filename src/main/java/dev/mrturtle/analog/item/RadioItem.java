@@ -1,11 +1,12 @@
 package dev.mrturtle.analog.item;
 
+import dev.mrturtle.analog.ModDataComponents;
 import dev.mrturtle.analog.gui.RadioItemGui;
-import dev.mrturtle.analog.util.RadioUtil;
+import dev.mrturtle.analog.item.component.RadioComponent;
 import eu.pb4.polymer.core.api.item.PolymerItem;
 import eu.pb4.polymer.resourcepack.api.PolymerModelData;
 import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
-import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.item.TooltipType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -46,11 +47,11 @@ public class RadioItem extends Item implements PolymerItem {
 
 	@Override
 	public int getPolymerCustomModelData(ItemStack itemStack, @Nullable ServerPlayerEntity player) {
-		return models[RadioUtil.isRadioEnabled(itemStack) ? 1 : 0].value();
+		return models[itemStack.getOrDefault(ModDataComponents.RADIO, RadioComponent.DEFAULT).enabled() ? 1 : 0].value();
 	}
 
 	@Override
-	public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
+	public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
 		tooltip.add(Text.translatable("item.analog.radio.tooltip.open", Text.keybind("key.use").formatted(Formatting.GRAY)).formatted(Formatting.DARK_GRAY));
 		tooltip.add(Text.translatable("item.analog.radio.tooltip.transmit", Text.keybind("key.swapOffhand").formatted(Formatting.GRAY)).formatted(Formatting.DARK_GRAY));
 	}

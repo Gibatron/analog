@@ -1,8 +1,9 @@
 package dev.mrturtle.analog.gui;
 
+import dev.mrturtle.analog.ModDataComponents;
 import dev.mrturtle.analog.ModItems;
 import dev.mrturtle.analog.config.ConfigManager;
-import dev.mrturtle.analog.util.RadioUtil;
+import dev.mrturtle.analog.item.component.RadioComponent;
 import eu.pb4.sgui.api.elements.GuiElementBuilder;
 import eu.pb4.sgui.api.gui.SimpleGui;
 import net.minecraft.item.ItemStack;
@@ -27,15 +28,16 @@ public class RadioItemGui extends SimpleGui {
 		setSlot(0, new GuiElementBuilder(ModItems.RADIO_CHANNEL_DOWN_BUTTON)
 				.setName(Text.translatable("gui.analog.radio.channel_down"))
 				.setCallback(() -> {
-					int currentChannel = RadioUtil.getRadioChannel(radioStack);
-					RadioUtil.setRadioChannel(radioStack, Math.max(0, currentChannel - 1));
+					RadioComponent component = radioStack.getOrDefault(ModDataComponents.RADIO, RadioComponent.DEFAULT);
+					radioStack.set(ModDataComponents.RADIO, component.withChannel(Math.max(0, component.channel() - 1)));
 					createChannelText();
 				}).build());
 		setSlot(1, new GuiElementBuilder(ModItems.RADIO_SET_CHANNEL_BUTTON)
 				.setName(Text.translatable("gui.analog.radio.set_channel"))
 				.setCallback(() -> {
-					RadioSelectChannelGui gui = new RadioSelectChannelGui(player, RadioUtil.getRadioChannel(radioStack), (channel) -> {
-						RadioUtil.setRadioChannel(radioStack, channel);
+					RadioComponent component = radioStack.getOrDefault(ModDataComponents.RADIO, RadioComponent.DEFAULT);
+					RadioSelectChannelGui gui = new RadioSelectChannelGui(player, component.channel(), (channel) -> {
+						radioStack.set(ModDataComponents.RADIO, component.withChannel(channel));
 						RadioItemGui radioGui = new RadioItemGui(player, radioStack);
 						radioGui.open();
 					});
@@ -45,15 +47,15 @@ public class RadioItemGui extends SimpleGui {
 				.setName(Text.translatable("gui.analog.radio.channel_up"))
 				.setCallback(() -> {
 					int maxRadioChannel = ConfigManager.config.maxRadioChannels - 1;
-					int currentChannel = RadioUtil.getRadioChannel(radioStack);
-					RadioUtil.setRadioChannel(radioStack, Math.min(maxRadioChannel, currentChannel + 1));
+					RadioComponent component = radioStack.getOrDefault(ModDataComponents.RADIO, RadioComponent.DEFAULT);
+					radioStack.set(ModDataComponents.RADIO, component.withChannel(Math.min(maxRadioChannel, component.channel() + 1)));
 					createChannelText();
 				}).build());
 	}
 
 	private void createChannelText() {
-		int currentChannel = RadioUtil.getRadioChannel(radioStack);
-		String channelText = String.valueOf(currentChannel);
+		RadioComponent component = radioStack.getOrDefault(ModDataComponents.RADIO, RadioComponent.DEFAULT);
+		String channelText = String.valueOf(component.channel());
 		if (channelText.length() == 1)
 			channelText = "0" + channelText;
 		String offsetString = "z".repeat(channelText.length() - 2);
@@ -61,31 +63,34 @@ public class RadioItemGui extends SimpleGui {
 	}
 
 	private void createEnableButton() {
-		boolean isEnabled = RadioUtil.isRadioEnabled(radioStack);
+		RadioComponent component = radioStack.getOrDefault(ModDataComponents.RADIO, RadioComponent.DEFAULT);
+		boolean isEnabled = component.enabled();
 		setSlot(4, new GuiElementBuilder(isEnabled ? ModItems.RADIO_DISABLE_BUTTON : ModItems.RADIO_ENABLE_BUTTON)
 				.setName(Text.translatable(isEnabled ? "gui.analog.radio.turn_off" : "gui.analog.radio.turn_on"))
 				.setCallback(() -> {
-					RadioUtil.setRadioEnabled(radioStack, !isEnabled);
+					radioStack.set(ModDataComponents.RADIO, component.withEnabled(!isEnabled));
 					createEnableButton();
 				}).build());
 	}
 
 	private void createTransmitButton() {
-		boolean isTransmitting = RadioUtil.isRadioTransmitting(radioStack);
+		RadioComponent component = radioStack.getOrDefault(ModDataComponents.RADIO, RadioComponent.DEFAULT);
+		boolean isTransmitting = component.transmit();
 		setSlot(5, new GuiElementBuilder(isTransmitting ? ModItems.RADIO_STOP_TRANSMIT_BUTTON : ModItems.RADIO_START_TRANSMIT_BUTTON)
 				.setName(Text.translatable(isTransmitting ? "gui.analog.radio.stop_transmitting" : "gui.analog.radio.start_transmitting"))
 				.setCallback(() -> {
-					RadioUtil.setRadioTransmitting(radioStack, !isTransmitting);
+					radioStack.set(ModDataComponents.RADIO, component.withTransmit(!isTransmitting));
 					createTransmitButton();
 				}).build());
 	}
 
 	private void createReceiveButton() {
-		boolean isReceiving = RadioUtil.isRadioReceiving(radioStack);
+		RadioComponent component = radioStack.getOrDefault(ModDataComponents.RADIO, RadioComponent.DEFAULT);
+		boolean isReceiving = component.receive();
 		setSlot(3, new GuiElementBuilder(isReceiving ? ModItems.RADIO_STOP_RECEIVE_BUTTON : ModItems.RADIO_START_RECEIVE_BUTTON)
 				.setName(Text.translatable(isReceiving ? "gui.analog.radio.stop_receiving" : "gui.analog.radio.start_receiving"))
 				.setCallback(() -> {
-					RadioUtil.setRadioReceiving(radioStack, !isReceiving);
+					radioStack.set(ModDataComponents.RADIO, component.withReceive(!isReceiving));
 					createReceiveButton();
 				}).build());
 	}

@@ -3,6 +3,7 @@ package dev.mrturtle.analog.gui;
 import dev.mrturtle.analog.ModItems;
 import dev.mrturtle.analog.config.ConfigManager;
 import eu.pb4.sgui.api.gui.AnvilInputGui;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.MutableText;
@@ -55,7 +56,7 @@ public class RadioSelectChannelGui extends AnvilInputGui {
 	public void setDefaultInputValue(String input) {
 		super.setDefaultInputValue(input);
 		ItemStack itemStack = ModItems.RADIO_SET_CHANNEL_BUTTON.getDefaultStack();
-		itemStack.setCustomName(Text.literal(input));
+		itemStack.set(DataComponentTypes.CUSTOM_NAME, Text.literal(input));
 		setSlot(0, itemStack, ((index, type1, action, gui) -> {
 			reOpen = true;
 			sendGui();
