@@ -100,6 +100,6 @@ public class RadioItemGui extends SimpleGui {
 	}
 
 	public Style getTitleStyle() {
-		return Style.EMPTY.withColor(Formatting.WHITE).withFont(new Identifier("analog", "radio_gui"));
+		return Style.EMPTY.withColor(Formatting.WHITE).withFont(Identifier.of("analog", "radio_gui"));
 	}
 }

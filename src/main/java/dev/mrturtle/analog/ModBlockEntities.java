@@ -16,7 +16,7 @@ public class ModBlockEntities {
 	public static void initialize() {}
 
 	public static <T extends BlockEntity> BlockEntityType<T> register(String path, BlockEntityType.Builder<T> builder) {
-		BlockEntityType<T> type = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier("analog", path), builder.build());
+		BlockEntityType<T> type = Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of("analog", path), builder.build());
 		PolymerBlockUtils.registerBlockEntity(type);
 		return type;
 	}

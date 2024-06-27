@@ -31,7 +31,7 @@ public class ModItems {
 	public static final Item RECEIVER_HOLDER_ITEM = register(new SimpleModeledPolymerHolderItem(new Item.Settings(), Items.PAPER), "receiver_holder");
 
 	public static void initialize() {
-		PolymerItemGroupUtils.registerPolymerItemGroup(new Identifier("analog", "group"), ItemGroup.create(ItemGroup.Row.BOTTOM, -1)
+		PolymerItemGroupUtils.registerPolymerItemGroup(Identifier.of("analog", "group"), ItemGroup.create(ItemGroup.Row.BOTTOM, -1)
 				.icon(RADIO_ITEM::getDefaultStack)
 				.displayName(Text.translatable("itemGroup.analog"))
 				.entries(((context, entries) -> {
@@ -44,7 +44,7 @@ public class ModItems {
 	}
 
 	public static <T extends Item> T register(T item, String ID) {
-		Identifier itemID = new Identifier("analog", ID);
+		Identifier itemID = Identifier.of("analog", ID);
 		if (item instanceof ModeledPolymerItem modeledItem) {
 			modeledItem.registerModel(itemID);
 		}

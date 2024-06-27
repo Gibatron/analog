@@ -17,7 +17,7 @@ public class ModBlocks {
 	public static void initialize() {}
 
 	public static <T extends Block> T register(T block, String ID) {
-		Identifier blockID = new Identifier("analog", ID);
+		Identifier blockID = Identifier.of("analog", ID);
 		return Registry.register(Registries.BLOCK, blockID, block);
 	}
 }

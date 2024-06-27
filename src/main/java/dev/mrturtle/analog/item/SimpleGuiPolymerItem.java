@@ -12,7 +12,7 @@ public class SimpleGuiPolymerItem extends SimpleModeledPolymerItem {
 
 	@Override
 	public void registerModel(Identifier ID) {
-		Identifier modelID = new Identifier(ID.getNamespace(), "gui/" + ID.getPath());
+		Identifier modelID = Identifier.of(ID.getNamespace(), "gui/" + ID.getPath());
 		modelData.put(this, PolymerResourcePackUtils.requestModel(this.getPolymerItem(), modelID));
 	}
 }

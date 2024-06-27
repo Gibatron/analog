@@ -2,9 +2,9 @@ package dev.mrturtle.analog.item.component;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import eu.pb4.polymer.core.api.item.PolymerItemComponent;
+import eu.pb4.polymer.core.api.other.PolymerComponent;
 
-public record RadioComponent(boolean enabled, boolean transmit, boolean receive, int channel) implements PolymerItemComponent {
+public record RadioComponent(boolean enabled, boolean transmit, boolean receive, int channel) implements PolymerComponent {
 	public static final Codec<RadioComponent> CODEC = RecordCodecBuilder.create((instance) -> instance.group(Codec.BOOL.fieldOf("enabled").forGetter(RadioComponent::enabled),
 			Codec.BOOL.fieldOf("transmit").forGetter(RadioComponent::transmit),
 			Codec.BOOL.fieldOf("receive").forGetter(RadioComponent::receive),

@@ -41,14 +41,14 @@ dependencies {
 
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 	implementation "de.maxhenkel.voicechat:voicechat-api:2.5.0"
-	modRuntimeOnly "maven.modrinth:simple-voice-chat:fabric-1.20.6-2.5.15"
+	modRuntimeOnly "maven.modrinth:simple-voice-chat:fabric-1.21-2.5.17"
 
-	modImplementation include("eu.pb4:sgui:1.5.1+1.20.5")
-	modImplementation include("eu.pb4:polymer-core:0.8.2+1.20.6")
-	modImplementation include("eu.pb4:polymer-virtual-entity:0.8.2+1.20.6")
-	modImplementation include("eu.pb4:polymer-blocks:0.8.2+1.20.6")
-	modImplementation include("eu.pb4:polymer-resource-pack:0.8.2+1.20.6")
-	modImplementation include("eu.pb4:polymer-autohost:0.8.2+1.20.6")
+	modImplementation include("eu.pb4:sgui:1.6.0+1.21")
+	modImplementation include("eu.pb4:polymer-core:0.9.2+1.21")
+	modImplementation include("eu.pb4:polymer-virtual-entity:0.9.2+1.21")
+	modImplementation include("eu.pb4:polymer-blocks:0.9.2+1.21")
+	modImplementation include("eu.pb4:polymer-resource-pack:0.9.2+1.21")
+	modImplementation include("eu.pb4:polymer-autohost:0.9.2+1.21")
 }
 
 processResources {
@@ -60,7 +60,7 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	it.options.release = 17
+	it.options.release = 21
 }
 
 java {
@@ -69,8 +69,8 @@ java {
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
 
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {

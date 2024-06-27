@@ -64,7 +64,7 @@ public class RadioSelectChannelGui extends AnvilInputGui {
 	}
 
 	public MutableText getDefaultTitle() {
-		MutableText guiTextureText = Text.literal("gfh").setStyle(Style.EMPTY.withColor(Formatting.WHITE).withFont(new Identifier("analog", "radio_gui")));
+		MutableText guiTextureText = Text.literal("gfh").setStyle(Style.EMPTY.withColor(Formatting.WHITE).withFont(Identifier.of("analog", "radio_gui")));
 		MutableText titleText = Text.translatable("gui.analog.radio.set_channel.title").setStyle(Style.EMPTY.withFont(Style.DEFAULT_FONT_ID).withColor(0x3F3F3F));
 		return guiTextureText.append(titleText);
 	}

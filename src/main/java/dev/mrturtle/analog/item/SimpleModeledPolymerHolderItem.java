@@ -12,7 +12,7 @@ public class SimpleModeledPolymerHolderItem extends SimpleModeledPolymerItem {
 
 	@Override
 	public void registerModel(Identifier ID) {
-		Identifier modelID = new Identifier(ID.getNamespace(), "block/" + ID.getPath().replace("_holder", ""));
+		Identifier modelID = Identifier.of(ID.getNamespace(), "block/" + ID.getPath().replace("_holder", ""));
 		modelData.put(this, PolymerResourcePackUtils.requestModel(this.getPolymerItem(), modelID));
 	}
 }

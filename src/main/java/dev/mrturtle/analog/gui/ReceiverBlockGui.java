@@ -67,6 +67,6 @@ public class ReceiverBlockGui extends SimpleGui {
 	}
 
 	public MutableText getDefaultTitle() {
-		return Text.literal("aec").setStyle(Style.EMPTY.withColor(Formatting.WHITE).withFont(new Identifier("analog", "radio_gui")));
+		return Text.literal("aec").setStyle(Style.EMPTY.withColor(Formatting.WHITE).withFont(Identifier.of("analog", "radio_gui")));
 	}
 }

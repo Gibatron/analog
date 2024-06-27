@@ -27,7 +27,7 @@ public interface ModeledPolymerItem extends PolymerItem {
 	}
 
 	default void registerModel(Identifier ID) {
-		Identifier modelID = new Identifier(ID.getNamespace(), "item/" + ID.getPath());
+		Identifier modelID = Identifier.of(ID.getNamespace(), "item/" + ID.getPath());
 		modelData.put(this, PolymerResourcePackUtils.requestModel(this.getPolymerItem(), modelID));
 	}
 }

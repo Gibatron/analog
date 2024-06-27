@@ -6,11 +6,11 @@ import dev.mrturtle.analog.item.component.RadioComponent;
 import eu.pb4.polymer.core.api.item.PolymerItem;
 import eu.pb4.polymer.resourcepack.api.PolymerModelData;
 import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
-import net.minecraft.client.item.TooltipType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -28,8 +28,8 @@ public class RadioItem extends Item implements PolymerItem {
 	public RadioItem(Settings settings) {
 		super(settings);
 		models = new PolymerModelData[2];
-		models[0] = PolymerResourcePackUtils.requestModel(Items.PAPER, new Identifier("analog", "item/radio_off"));
-		models[1] = PolymerResourcePackUtils.requestModel(Items.PAPER, new Identifier("analog", "item/radio_on"));
+		models[0] = PolymerResourcePackUtils.requestModel(Items.PAPER, Identifier.of("analog", "item/radio_off"));
+		models[1] = PolymerResourcePackUtils.requestModel(Items.PAPER, Identifier.of("analog", "item/radio_on"));
 	}
 
 	@Override
